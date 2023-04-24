@@ -7,14 +7,18 @@ const postSchema = new mongoose.Schema(
       ref: 'User',
       require: [true, 'Post must belong to auser']
     },
-    content: { type: String },
-    images: { type: [String], default: [] },
+    title: { type: String },
+    description: { type: String },
     likes: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       default: []
     },
     unlikes: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+      default: []
+    },
+    comments: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
       default: []
     }
   },

@@ -23,6 +23,7 @@
     "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.4",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "validator": "^13.9.0"
   }
 }
