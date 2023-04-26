@@ -27,18 +27,13 @@ const sendErrorDev = (err, req, res) => {
       message: err.message,
       stack: err.stack
     });
-  } else {
-    res.status(err.statusCode).render('error', {
-      title: 'somthing went wrong',
-      message: err.message
-    });
   }
 };
 
 const sendErrorProd = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     if (err.isOperational) {
-      return res.status(err.statusCode).render('error', {
+      return res.status(err.statusCode).json({
         title: 'somthing went wrong',
         message: err.message
       });
