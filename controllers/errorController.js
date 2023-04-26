@@ -44,22 +44,11 @@ const sendErrorProd = (err, req, res) => {
       });
     }
     console.log('Error:', err);
-    return res.status(err.statusCode).render('error', {
+    return res.status(err.statusCode).json({
       title: 'somthing went wrong',
       message: 'Something went wrong,try again after some time.'
     });
   }
-  if (err.isOperational) {
-    return res.status(err.statusCode).render('error', {
-      title: 'somthing went wrong',
-      message: err.message
-    });
-  }
-  console.log('Error:', err);
-  return res.status(err.statusCode).render('error', {
-    title: 'somthing went wrong',
-    message: 'Something went wrong,try again after some time.'
-  });
 };
 
 module.exports = (err, req, res, next) => {
