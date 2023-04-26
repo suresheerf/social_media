@@ -18,11 +18,9 @@ services:
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     environment:
-      - ENV=$ENV
-      - PORT=$PORT
-      - DB_HOST=mongodb
-      - DB_NAME=$DB_NAME
-      - DB_PORT=$DB_PORT
+      - ENV=$NODE_ENV
+      - PORT=$NODE_DOCKER_PORT
+      - DB_URL=$DB_URL
     stdin_open: true
     tty: true
 
