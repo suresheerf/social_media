@@ -1,23 +1,23 @@
-const appError = require('./../utils/appError');
+const AppError = require('./../utils/appError');
 const { NODE_ENV } = require('../config/config');
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
-  return new appError(message, 400);
+  return new AppError(message, 400);
 };
 
 const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.message);
 
   const message = `Invalid input data. ${errors.join('. ')}`;
-  return new appError(message, 400);
+  return new AppError(message, 400);
 };
 
 const handleJsonWebTokenError = () =>
-  new appError('invalid token! please login agin', 401);
+  new AppError('invalid token! please login agin', 401);
 
 const handleJWTExpiredError = () =>
-  new appError('token expired! please login again', 401);
+  new AppError('token expired! please login again', 401);
 
 const sendErrorDev = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
