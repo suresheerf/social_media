@@ -34,6 +34,7 @@ module.exports.getPost = catchAsync(async (req, res, next) => {
       }
     }
   ]);
+  console.log('hfgh');
   if (post.length === 0)
     return next(new AppError('Could not find the post', 404));
   res.status(200).json(post[0]);
