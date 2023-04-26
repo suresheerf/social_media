@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Comment = require('../models/comment.model');
+const Post = require('../models/post.model');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -12,6 +13,10 @@ module.exports.createComment = catchAsync(async (req, res, next) => {
 
   const comment = await Comment.create(commentObj);
   if (!comment) return next(new AppError('Something went wrong', 409));
+  await db.Post.updateOne(
+    { _id: comment.postId },
+    { $push: { comments: comment._id } }
+  );
   res.status(201).json({
     'Comment-ID': comment._id
   });
