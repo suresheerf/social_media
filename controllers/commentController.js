@@ -5,6 +5,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 module.exports.createComment = catchAsync(async (req, res, next) => {
+  if (!req.body.comment) {
+    return next(new AppError('Comment can not be empty', 400));
+  }
   const commentObj = {
     postId: new mongoose.Types.ObjectId(req.params.postId),
     userId: req.user._id,

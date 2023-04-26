@@ -4,6 +4,12 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 module.exports.createPost = catchAsync(async (req, res, next) => {
+  if (!req.body.title) {
+    return next(new AppError('Please pass post title', 400));
+  }
+  if (!req.body.description) {
+    return next(new AppError('Please pass post title', 400));
+  }
   const postObj = {
     userId: req.user._id,
     title: req.body.title,
