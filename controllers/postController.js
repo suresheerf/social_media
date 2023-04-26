@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Post = require('../models/post.model');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
