@@ -5,18 +5,16 @@ const AppError = require('../utils/appError');
 
 module.exports.createComment = catchAsync(async (req, res, next) => {
   const commentObj = {
-    postId: mongoose.Schema.Types.ObjectId(req.params.postId),
+    postId: new mongoose.Types.ObjectId(req.params.postId),
     userId: req.user._id,
     content: req.body.comment
   };
 
   const comment = await Comment.create(commentObj);
   if (!comment) return next(new AppError('Something went wrong', 409));
-  res
-    .status(201)
-    .json({
-      status: 'success',
-      message: 'Comment created successfully',
-      comment
-    });
+  res.status(201).json({
+    status: 'success',
+    message: 'Comment created successfully',
+    comment
+  });
 });

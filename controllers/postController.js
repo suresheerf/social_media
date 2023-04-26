@@ -14,9 +14,24 @@ module.exports.createPost = catchAsync(async (req, res, next) => {
   res.status(201).json(post);
 });
 module.exports.getPost = catchAsync(async (req, res, next) => {
-  const post = await Post.findById(req.params.postId);
-  if (!post) return next(new AppError('Could not find the post', 404));
-  res.status(200).json({ status: 'success', post });
+  const post = await Post.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.params.postId)
+      }
+    },
+    {
+      $project: {
+        title: 1,
+        description: 1,
+        likes: { $size: '$likes' },
+        comments: { $size: '$comments' }
+      }
+    }
+  ]);
+  if (post.length === 0)
+    return next(new AppError('Could not find the post', 404));
+  res.status(200).json(post[0]);
 });
 
 module.exports.getAllPosts = catchAsync(async (req, res, next) => {
@@ -55,8 +70,14 @@ module.exports.getAllPosts = catchAsync(async (req, res, next) => {
 });
 
 module.exports.deletePost = catchAsync(async (req, res, next) => {
-  const post = await Post.deleteOne({ _id: req.params.postId });
+  const post = await Post.findById(req.params.postId);
+  console.log('post:', post);
   if (!post) return next(new AppError('Could not find the post', 404));
+
+  if (post.userId.toString() !== req.user._id.toString()) {
+    return next(new AppError('you can not delete others post', 401));
+  }
+  await Post.findByIdAndDelete(req.params.postId);
   res
     .status(200)
     .json({ status: 'success', message: 'Post deleted successfully' });
@@ -64,7 +85,7 @@ module.exports.deletePost = catchAsync(async (req, res, next) => {
 
 module.exports.likePost = catchAsync(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(req.params.postId, {
-    $addToset: { likes: req.user._id },
+    $addToSet: { likes: req.user._id },
     $pull: { unlikes: req.user._id }
   });
   if (!post) return next(new AppError('Could not find the post', 404));
@@ -75,8 +96,8 @@ module.exports.likePost = catchAsync(async (req, res, next) => {
 
 module.exports.unlikePost = catchAsync(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(req.params.postId, {
-    $addToset: { unlikes: req.user._id },
-    $pull: { likes: reqq.user._id }
+    $addToSet: { unlikes: req.user._id },
+    $pull: { likes: req.user._id }
   });
   if (!post) return next(new AppError('Could not find the post', 404));
   res

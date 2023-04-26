@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
 const globalErrHandler = require('./controllers/errorController');
@@ -10,6 +11,7 @@ const commentRouter = require('./routes/comment.routes');
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'server running' });
 });
