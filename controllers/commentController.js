@@ -13,8 +13,6 @@ module.exports.createComment = catchAsync(async (req, res, next) => {
   const comment = await Comment.create(commentObj);
   if (!comment) return next(new AppError('Something went wrong', 409));
   res.status(201).json({
-    status: 'success',
-    message: 'Comment created successfully',
-    comment
+    'Comment-ID': comment._id
   });
 });

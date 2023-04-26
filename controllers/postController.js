@@ -11,7 +11,12 @@ module.exports.createPost = catchAsync(async (req, res, next) => {
 
   const post = await Post.create(postObj);
   if (!post) return next(new AppError('Something went wrong', 409));
-  res.status(201).json(post);
+  res.status(201).json({
+    'Post-Id': post._id,
+    Title: post.title,
+    Description: post.description,
+    'Created Time': post.createdAt
+  });
 });
 module.exports.getPost = catchAsync(async (req, res, next) => {
   const post = await Post.aggregate([
@@ -52,11 +57,17 @@ module.exports.getAllPosts = catchAsync(async (req, res, next) => {
     {
       $addFields: {
         desc: '$description',
-        likes: { $size: '$likes' }
+        likes: { $size: '$likes' },
+        created_at: '$createdAt',
+        id: '$_id'
       }
     },
     {
+      $sort: { createdAt: -1 }
+    },
+    {
       $project: {
+        id: 1,
         title: 1,
         desc: 1,
         created_at: 1,
