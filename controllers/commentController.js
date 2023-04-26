@@ -13,7 +13,7 @@ module.exports.createComment = catchAsync(async (req, res, next) => {
 
   const comment = await Comment.create(commentObj);
   if (!comment) return next(new AppError('Something went wrong', 409));
-  await db.Post.updateOne(
+  await Post.updateOne(
     { _id: comment.postId },
     { $push: { comments: comment._id } }
   );
