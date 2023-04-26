@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/user.routes');
 const postRouter = require('./routes/post.routes');
 const commentRouter = require('./routes/comment.routes');
+const AppError = require('./utils/appError');
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -22,7 +23,7 @@ app.use('/api', protect, postRouter);
 app.use('/api', protect, commentRouter);
 
 app.all('*', (req, res, next) => {
-  next(new appError(`can't find ${req.originalUrl} on this server!`, 404));
+  next(new AppError(`can't find ${req.originalUrl} on this server!`, 404));
 });
 
 app.use(globalErrHandler);
