@@ -8,7 +8,7 @@ module.exports.createPost = catchAsync(async (req, res, next) => {
     return next(new AppError('Please pass post title', 400));
   }
   if (!req.body.description) {
-    return next(new AppError('Please pass post title', 400));
+    return next(new AppError('Please pass post description', 400));
   }
   const postObj = {
     userId: req.user._id,
