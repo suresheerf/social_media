@@ -88,6 +88,42 @@ module.exports.getAllPosts = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', posts });
 });
 
+module.exports.getFeed = catchAsync(async (req, res, next) => {
+  const posts = await Post.aggregate([
+    {
+      $lookup: {
+        from: 'comments',
+        localField: 'comments',
+        foreignField: '_id',
+        as: 'comments'
+      }
+    },
+    {
+      $addFields: {
+        desc: '$description',
+        likes: { $size: '$likes' },
+        created_at: '$createdAt',
+        id: '$_id'
+      }
+    },
+    {
+      $sort: { createdAt: -1 }
+    },
+    {
+      $project: {
+        id: 1,
+        title: 1,
+        desc: 1,
+        created_at: 1,
+        comments: 1,
+        likes: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({ status: 'success', posts });
+});
+
 module.exports.deletePost = catchAsync(async (req, res, next) => {
   const post = await Post.findById(req.params.postId);
   console.log('post:', post);
