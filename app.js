@@ -11,7 +11,7 @@ const commentRouter = require('./routes/comment.routes');
 const AppError = require('./utils/appError');
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extends:true}));
 app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'server running' });
