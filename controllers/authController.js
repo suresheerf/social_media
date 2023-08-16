@@ -39,3 +39,19 @@ module.exports.signin = catchAsync(async (req, res, next) => {
     next(new AppError('Please enter correct password', 400));
   }
 });
+
+module.exports.signup = catchAsync(async (req, res, next) => {
+  console.log('body:', req.body);
+  const { email, password,name } = req.body;
+
+  if (!email || !password) {
+    return next(new AppError('please provide email and password', 400));
+  }
+  const user = await User.findOne({ email: req.body.email });
+  if (user) {
+    return next(new AppError('Email already taken please use another', 404));
+  }
+  const newUser = await User.create({email,password,name});
+
+  createSendToken(newUser, 200, req, res);
+});
