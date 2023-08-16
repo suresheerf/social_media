@@ -14,8 +14,8 @@ const {
 
 router.post('/posts', createPost);
 router.route('/posts/:postId').get(getPost).delete(deletePost);
-router.post('/like/:postId', likePost);
-router.post('/unlike/:postId', unlikePost);
+router.get('/like/:postId', likePost);
+router.get('/unlike/:postId', unlikePost);
 router.get('/posts', getAllPosts);
 router.get('/feed',getFeed)
 
