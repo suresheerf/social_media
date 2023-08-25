@@ -5,25 +5,26 @@ const postSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      require: [true, 'Post must belong to auser']
+      require: [true, 'Post must belong to auser'],
     },
     title: { type: String },
     description: { type: String },
+    image: { type: String },
     likes: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      default: []
+      default: [],
     },
     unlikes: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      default: []
+      default: [],
     },
     comments: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }],
-      default: []
-    }
+      default: [],
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
