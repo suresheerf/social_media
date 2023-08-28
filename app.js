@@ -51,6 +51,8 @@ const specs = swaggerJsdoc(options);
 app.use(express.json());
 app.use(express.urlencoded({ extends: true }));
 app.use(morgan('dev'));
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'server running' });
 });
