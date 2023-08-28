@@ -1,4 +1,4 @@
-const AppError = require('./../utils/appError');
+const AppError = require('../utils/appError');
 const { NODE_ENV } = require('../config/config');
 
 const handleCastErrorDB = (err) => {
@@ -13,11 +13,9 @@ const handleValidationErrorDB = (err) => {
   return new AppError(message, 400);
 };
 
-const handleJsonWebTokenError = () =>
-  new AppError('invalid token! please login agin', 401);
+const handleJsonWebTokenError = () => new AppError('invalid token! please login agin', 401);
 
-const handleJWTExpiredError = () =>
-  new AppError('token expired! please login again', 401);
+const handleJWTExpiredError = () => new AppError('token expired! please login again', 401);
 
 const sendErrorDev = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
@@ -25,7 +23,7 @@ const sendErrorDev = (err, req, res) => {
       status: err.status,
       error: err,
       message: err.message,
-      stack: err.stack
+      stack: err.stack,
     });
   }
 };
@@ -35,13 +33,13 @@ const sendErrorProd = (err, req, res) => {
     if (err.isOperational) {
       return res.status(err.statusCode).json({
         title: 'somthing went wrong',
-        message: err.message
+        message: err.message,
       });
     }
     console.log('Error:', err);
     return res.status(err.statusCode).json({
       title: 'somthing went wrong',
-      message: 'Something went wrong,try again after some time.'
+      message: 'Something went wrong,try again after some time.',
     });
   }
 };
@@ -56,8 +54,7 @@ module.exports = (err, req, res, next) => {
     let error = { ...err };
     error.message = err.message;
     if (error.name === 'CastError') error = handleCastErrorDB(error);
-    if (error.name === 'ValidationError')
-      error = handleValidationErrorDB(error);
+    if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
     if (error.name === 'JsonWebTokenError') error = handleJsonWebTokenError();
     if (error.name === 'JWTExpiredError') error = handleJWTExpiredError();
     sendErrorProd(error, req, res);

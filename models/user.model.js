@@ -10,23 +10,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
-      validate: [validator.isEmail, 'Email must be valid']
+      validate: [validator.isEmail, 'Email must be valid'],
     },
     password: { type: String, require: [true, 'Please pass password'] },
     followers: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      default: []
+      default: [],
     },
     following: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-      default: []
-    }
+      default: [],
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
-
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
@@ -36,14 +35,10 @@ userSchema.pre('save', async function (next) {
   this.confirmPassword = undefined;
   next();
 });
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
   const isCorrect = await bcrypt.compare(candidatePassword, userPassword);
   return isCorrect;
 };
-
 
 const User = mongoose.model('User', userSchema);
 
