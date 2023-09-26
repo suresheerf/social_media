@@ -20,9 +20,9 @@ module.exports.protect = catchAsync(async (req, res, next) => {
   const decode = await promisify(jwt.verify)(token, JWT_SECRET);
   console.log('decode:', decode);
   const user = await User.findById(decode.id);
-  console.log('after user finding');
+
   if (!user) return next(new AppError('user has been deleted', 400));
-  console.log('user:', user);
+  console.log('userId:', user._id);
 
   req.user = user;
   res.locals.user = user;
