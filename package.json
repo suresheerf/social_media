@@ -4,7 +4,7 @@
   "description": "generalized social media backend using nodejs and mongodb",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "ts-node src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
