@@ -4,7 +4,7 @@ import Post from '../models/post.model';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
 
-export const createComment = catchAsync(async (req, res, next) => {
+const createComment = catchAsync(async (req, res, next) => {
   if (!req.body.comment) {
     return next(new AppError('Comment can not be empty', 400));
   }
@@ -21,3 +21,5 @@ export const createComment = catchAsync(async (req, res, next) => {
     'Comment-ID': comment._id,
   });
 });
+
+export default createComment;
