@@ -1,36 +1,53 @@
 {
-    "env": {
-      "es6": true,
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "prettier",
+    "plugin:node/recommended",
+    "plugin:security/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "settings": {
+    "import/resolver":{
+      "typescript": true,
       "node": true
-    },
-    "extends": ["airbnb-base", "prettier", "plugin:node/recommended","plugin:security/recommended"],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "sourceType": "module"
-    },
-    "plugins": ["prettier"],
-    "rules": {
-      "prettier/prettier":  [
-        "error",
-        {
-          "endOfLine": "auto"
-        }
-      ],
-      "no-unused-vars": ["warn", { "argsIgnorePattern": "next" }],
-      "no-console": "off",
-      "func-names": "off",
-      "no-plusplus": "off",
-      "no-process-exit": "off",
-      "class-methods-use-this": "off",
-      "no-param-reassign":"off",
-      "prefer-destructuring":["error",{"object": true, "array": false}],
-      "consistent-return":"off",
-      "no-underscore-dangle":["error", { "allow": ["_id"] }],
-      "import/extensions":"off",
-      "camelcase":"off"
     }
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["prettier", "@typescript-eslint"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "next" }],
+    "no-console": "off",
+    "func-names": "off",
+    "no-plusplus": "off",
+    "no-process-exit": "off",
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "consistent-return": "off",
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "import/extensions": "off",
+    "camelcase": "off",
+    "node/no-unsupported-features/es-syntax": ["error", { "ignores": ["modules"] }]
   }
+}

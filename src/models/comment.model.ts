@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const commentSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      require: [true, 'Post must belong to auser'],
+      require: [true, 'Post must belong to a user'],
     },
     postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
     content: { type: String },
@@ -17,4 +17,4 @@ const commentSchema = new mongoose.Schema(
 
 const Comment = mongoose.model('Comment', commentSchema);
 
-module.exports = Comment;
+export default Comment;

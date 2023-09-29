@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      require: [true, 'Post must belong to auser'],
+      require: [true, 'Post must belong to a user'],
     },
     title: { type: String },
     description: { type: String },
@@ -30,4 +30,4 @@ const postSchema = new mongoose.Schema(
 
 const Post = mongoose.model('Post', postSchema);
 
-module.exports = Post;
+export default Post;

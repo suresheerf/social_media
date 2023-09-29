@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const { PORT, DB_URL } = require('./config/config');
-const app = require('./app');
+import { PORT, DB_URL } from './config/config';
+import app from './app';
 
 mongoose
   .connect(DB_URL)
@@ -12,10 +12,10 @@ mongoose
     console.error('Error:', err);
   });
 
-app.listen(PORT, (err) => {
-  if (err) {
-    console.error('Error:', err);
-  } else {
+app
+  .listen(PORT, () => {
     console.log(`App listening on ${PORT}`);
-  }
-});
+  })
+  .on('error', (err) => {
+    console.log('err: ', err);
+  });

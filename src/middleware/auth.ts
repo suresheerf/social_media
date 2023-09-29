@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
+import { verify } from 'jsonwebtoken';
+import { promisify } from 'util';
 
-const User = require('../models/user.model');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const { JWT_SECRET } = require('../config/config');
+import User from '../models/user.model';
+import catchAsync from '../utils/catchAsync';
+import AppError from '../utils/appError';
+import { JWT_SECRET } from '../config/config';
 
-module.exports.protect = catchAsync(async (req, res, next) => {
+const protect = catchAsync(async (req, res, next) => {
   console.log('inside protect');
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -17,7 +17,7 @@ module.exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError('you are not logged in! please login to get access', 401));
   }
 
-  const decode = await promisify(jwt.verify)(token, JWT_SECRET);
+  const decode = await promisify(verify)(token, JWT_SECRET);
   console.log('decode:', decode);
   const user = await User.findById(decode.id);
 
@@ -28,3 +28,5 @@ module.exports.protect = catchAsync(async (req, res, next) => {
   res.locals.user = user;
   next();
 });
+
+export default protect;

@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const { JWT_EXPIRES_IN, JWT_SECRET } = require('../config/config');
-const User = require('../models/user.model');
+import { sign } from 'jsonwebtoken';
+import { hash, compare } from 'bcrypt';
+import catchAsync from '../utils/catchAsync';
+import AppError from '../utils/appError';
+import { JWT_EXPIRES_IN, JWT_SECRET } from '../config/config';
+import User from '../models/user.model';
 
 const signToken = (id) =>
-  jwt.sign({ id }, JWT_SECRET, {
+  sign({ id }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 const createSendToken = (user, statusCode, req, res) => {
@@ -16,7 +16,7 @@ const createSendToken = (user, statusCode, req, res) => {
     token,
   });
 };
-module.exports.signin = catchAsync(async (req, res, next) => {
+export const signin = catchAsync(async (req, res, next) => {
   console.log('body:', req.body);
   const { email, password } = req.body;
 
@@ -27,9 +27,9 @@ module.exports.signin = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('Could not find the user with given email', 404));
   }
-  const pass = await bcrypt.hash(password, 12);
+  const pass = await hash(password, 12);
   console.log('pass:', pass);
-  const isCorrect = await bcrypt.compare(password, user.password);
+  const isCorrect = await compare(password, user.password);
 
   console.log('isCorrect:', isCorrect);
   if (isCorrect) {
@@ -39,7 +39,7 @@ module.exports.signin = catchAsync(async (req, res, next) => {
   }
 });
 
-module.exports.signup = catchAsync(async (req, res, next) => {
+export const signup = catchAsync(async (req, res, next) => {
   console.log('body:', req.body);
   const { email, password, name } = req.body;
 

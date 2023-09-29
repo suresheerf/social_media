@@ -1,22 +1,22 @@
-const express = require('express');
-const morgan = require('morgan');
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const m2s = require('mongoose-to-swagger');
+import express from 'express';
+import morgan from 'morgan';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import m2s from 'mongoose-to-swagger';
+
+import globalErrHandler from './controllers/errorController';
+import protect from './middleware/auth';
+import authRouter from './routes/auth.routes';
+import userRouter from './routes/user.routes';
+import postRouter from './routes/post.routes';
+import commentRouter from './routes/comment.routes';
+import AppError from './utils/appError';
+
+import User from './models/user.model';
+import Post from './models/post.model';
+import Comment from './models/comment.model';
 
 const app = express();
-
-const globalErrHandler = require('./controllers/errorController');
-const { protect } = require('./middleware/auth');
-const authRouter = require('./routes/auth.routes');
-const userRouter = require('./routes/user.routes');
-const postRouter = require('./routes/post.routes');
-const commentRouter = require('./routes/comment.routes');
-const AppError = require('./utils/appError');
-
-const User = require('./models/user.model');
-const Post = require('./models/post.model');
-const Comment = require('./models/comment.model');
 
 const options = {
   definition: {
@@ -49,7 +49,7 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 app.use(express.json());
-app.use(express.urlencoded({ extends: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 app.use(express.static('public'));
 
@@ -72,4 +72,4 @@ app.all('*', (req, res, next) => {
 
 app.use(globalErrHandler);
 
-module.exports = app;
+export default app;

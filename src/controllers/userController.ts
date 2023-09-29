@@ -1,8 +1,8 @@
-const User = require('../models/user.model');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+import User from '../models/user.model';
+import catchAsync from '../utils/catchAsync';
+import AppError from '../utils/appError';
 
-module.exports.getUser = catchAsync(async (req, res, next) => {
+export const getUser = catchAsync(async (req, res, next) => {
   const user = {
     name: req.user.name,
     followers: req.user.followers.length,
@@ -11,7 +11,7 @@ module.exports.getUser = catchAsync(async (req, res, next) => {
   res.status(200).json(user);
 });
 
-module.exports.followUser = catchAsync(async (req, res, next) => {
+export const followUser = catchAsync(async (req, res, next) => {
   const other_user = await User.findByIdAndUpdate(req.params.userId, {
     $addToSet: { followers: req.user._id },
   });
@@ -24,7 +24,7 @@ module.exports.followUser = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', message: 'Following user successfully' });
 });
 
-module.exports.unfollowUser = catchAsync(async (req, res, next) => {
+export const unfollowUser = catchAsync(async (req, res, next) => {
   const other_user = await User.findByIdAndUpdate(req.params.userId, {
     $pull: { followers: req.user._id },
   });

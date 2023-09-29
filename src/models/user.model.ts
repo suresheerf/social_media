@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const validator = require('validator');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import validator from 'validator';
 
 const userSchema = new mongoose.Schema(
   {
@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
       validate: [validator.isEmail, 'Email must be valid'],
     },
     password: { type: String, require: [true, 'Please pass password'] },
+    confirmPassword: { type: String },
     followers: {
       type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       default: [],
@@ -42,4 +43,4 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

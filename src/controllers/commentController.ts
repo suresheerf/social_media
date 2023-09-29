@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
-const Comment = require('../models/comment.model');
-const Post = require('../models/post.model');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+import { Types } from 'mongoose';
+import Comment from '../models/comment.model';
+import Post from '../models/post.model';
+import catchAsync from '../utils/catchAsync';
+import AppError from '../utils/appError';
 
-module.exports.createComment = catchAsync(async (req, res, next) => {
+export const createComment = catchAsync(async (req, res, next) => {
   if (!req.body.comment) {
     return next(new AppError('Comment can not be empty', 400));
   }
   const commentObj = {
-    postId: new mongoose.Types.ObjectId(req.params.postId),
+    postId: new Types.ObjectId(req.params.postId),
     userId: req.user._id,
     content: req.body.comment,
   };
