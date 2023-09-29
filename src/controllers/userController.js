@@ -19,7 +19,7 @@ module.exports.followUser = catchAsync(async (req, res, next) => {
     $addToSet: { following: req.params.userId },
   });
   if (!other_user || !user) {
-    return next(new AppError('Somthing went wrong', 409));
+    return next(new AppError('Something went wrong', 409));
   }
   res.status(200).json({ status: 'success', message: 'Following user successfully' });
 });
@@ -32,7 +32,7 @@ module.exports.unfollowUser = catchAsync(async (req, res, next) => {
     $pull: { following: req.params.userId },
   });
   if (!other_user || !user) {
-    return next(new AppError('Somthing went wrong', 409));
+    return next(new AppError('Something went wrong', 409));
   }
   res.status(200).json({ status: 'success', message: 'unfollowing user successfully' });
 });
