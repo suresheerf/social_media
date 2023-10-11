@@ -32,7 +32,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'http://localhost:3004',
       },
     ],
     components: {
@@ -43,11 +43,10 @@ const options = {
       },
     },
   },
-  apis: ['./src/controller/*.js'],
+  apis: [`${__dirname}/controllers/*.ts`],
 };
 
 const specs = swaggerJsdoc(options);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));

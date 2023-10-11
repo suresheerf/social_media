@@ -11,6 +11,50 @@ type PostObj = {
   image?: string;
 };
 
+/**
+ * @swagger
+ * tags:
+ *   name: post
+ *   description: api for post management
+ * /api/posts:
+ *   post:
+ *     summery: create new post
+ *     tags: [post]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: awesome post
+ *               description:
+ *                 type: string
+ *                 example: post description
+ *     responses:
+ *       201:
+ *         description: successful post creation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Post-Id:
+ *                   type: string
+ *                 Title:
+ *                   type: string
+ *                 Description:
+ *                   type: string
+ *                 image:
+ *                   type: string
+ *                 Created Time:
+ *                   type: string
+ *                   format: date-time
+ *
+ */
+
 export const createPost = catchAsync(async (req, res, next) => {
   if (!req.body.title) {
     return next(new AppError('Please pass post title', 400));
@@ -39,6 +83,39 @@ export const createPost = catchAsync(async (req, res, next) => {
     'Created Time': post.createdAt,
   });
 });
+
+/**
+ * @swagger
+ * /api/posts/{postId}:
+ *   get:
+ *     summery: get post by id
+ *     tags: [post]
+ *     parameters:
+ *       - in: params
+ *         name: postId
+ *         type: string
+ *         example: 64dc6a450b3f317aa89fc732
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: get post
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 likes:
+ *                   type: number
+ *                 comments:
+ *                   type: number
+ *
+ */
+
 export const getPost = catchAsync(async (req, res, next) => {
   const post = await Post.aggregate([
     {
@@ -101,6 +178,46 @@ export const getAllPosts = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', posts });
 });
 
+/**
+ * @swagger
+ * /api/feed:
+ *   get:
+ *     summery: get feed
+ *     tags: [post]
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: successful post creation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       desc:
+ *                         type: string
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                       likes:
+ *                         type: number
+ *                       comments:
+ *                         type: object
+ *
+ *
+ */
+
 export const getFeed = catchAsync(async (req, res, next) => {
   const posts = await Post.aggregate([
     {
@@ -137,6 +254,35 @@ export const getFeed = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', posts });
 });
 
+/**
+ * @swagger
+ * /api/posts/{postId}:
+ *   delete:
+ *     summery: delete a post
+ *     tags: [post]
+ *     parameters:
+ *       - in: params
+ *         name: postId
+ *         type: string
+ *         example: 64dc6a450b3f317aa89fc732
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: successful post deletion
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Post deleted successfully
+ */
+
 export const deletePost = catchAsync(async (req, res, next) => {
   const post = await Post.findById(req.params.postId);
   console.log('post:', post);
@@ -149,6 +295,35 @@ export const deletePost = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', message: 'Post deleted successfully' });
 });
 
+/**
+ * @swagger
+ * /api/like/{postId}:
+ *   get:
+ *     summery: like a post
+ *     tags: [post]
+ *     parameters:
+ *       - in: params
+ *         name: postId
+ *         type: string
+ *         example: 64dc6a450b3f317aa89fc732
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: successful post like
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Post liked successfully
+ */
+
 export const likePost = catchAsync(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(req.params.postId, {
     $addToSet: { likes: req.user._id },
@@ -158,11 +333,40 @@ export const likePost = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', message: 'Post liked successfully' });
 });
 
+/**
+ * @swagger
+ * /api/unlike/{postId}:
+ *   get:
+ *     summery: unlike a post
+ *     tags: [post]
+ *     parameters:
+ *       - in: params
+ *         name: postId
+ *         type: string
+ *         example: 64dc6a450b3f317aa89fc732
+ *     requestBody:
+ *       required: false
+ *     responses:
+ *       200:
+ *         description: successful post unlike
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 message:
+ *                   type: string
+ *                   example: Post disliked successfully
+ */
+
 export const unlikePost = catchAsync(async (req, res, next) => {
   const post = await Post.findByIdAndUpdate(req.params.postId, {
     $addToSet: { unlikes: req.user._id },
     $pull: { likes: req.user._id },
   });
   if (!post) return next(new AppError('Could not find the post', 404));
-  res.status(200).json({ status: 'success', message: 'Post unliked successfully' });
+  res.status(200).json({ status: 'success', message: 'Post disliked successfully' });
 });

@@ -16,6 +16,41 @@ const createSendToken = (user, statusCode, req, res) => {
     token,
   });
 };
+
+/**
+ * @swagger
+ * tags:
+ *   name: user
+ *   description: api for user management
+ * /api/signin:
+ *   post:
+ *     summery: signin api
+ *     tags: [user]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user1@gmail.com
+ *               password:
+ *                 type: string
+ *                 example: user@123
+ *     responses:
+ *       200:
+ *         description: successful signin
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *
+ */
 export const signin = catchAsync(async (req, res, next) => {
   console.log('body:', req.body);
   const { email, password } = req.body;
@@ -39,6 +74,41 @@ export const signin = catchAsync(async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/signup:
+ *   post:
+ *     summery: signup api
+ *     tags: [user]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user1@gmail.com
+ *               password:
+ *                 type: string
+ *                 example: user@123
+ *               name:
+ *                 type: string
+ *                 example: user1
+ *     responses:
+ *       200:
+ *         description: successful signup
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *
+ */
+
 export const signup = catchAsync(async (req, res, next) => {
   console.log('body:', req.body);
   const { email, password, name } = req.body;
@@ -48,7 +118,7 @@ export const signup = catchAsync(async (req, res, next) => {
   }
   const user = await User.findOne({ email: req.body.email });
   if (user) {
-    return next(new AppError('Email already taken please use another', 404));
+    return next(new AppError('Email already taken please use another', 400));
   }
   const newUser = await User.create({ email, password, name });
 

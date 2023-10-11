@@ -4,6 +4,43 @@ import Post from '../models/post.model';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
 
+/**
+ * @swagger
+ * tags:
+ *   name: comment
+ *   description: api for comment management
+ * /api/comment/{postId}:
+ *   post:
+ *     summery: signin api
+ *     tags: [comment]
+ *     parameters:
+ *       - in: params
+ *         name: postId
+ *         type: string
+ *         example: 64dc6a450b3f317aa89fc732
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               comment:
+ *                 type: string
+ *                 example: awesome post
+ *     responses:
+ *       201:
+ *         description: successful comment creation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Comment-ID:
+ *                   type: string
+ *
+ */
+
 const createComment = catchAsync(async (req, res, next) => {
   if (!req.body.comment) {
     return next(new AppError('Comment can not be empty', 400));
