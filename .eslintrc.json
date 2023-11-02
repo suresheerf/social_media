@@ -13,9 +13,12 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "settings": {
-    "import/resolver":{
+    "import/resolver": {
       "typescript": true,
       "node": true
+    },
+    "node": {
+      "tryExtensions": [".js", ".json", ".node", ".ts", ".d.ts"]
     }
   },
   "globals": {

@@ -30,15 +30,15 @@ const protect = catchAsync(async (req, res, next) => {
 });
 
 export const basicAuth = (req, res, next) => {
-  const authheader = req.headers.authorization;
+  const authHeader = req.headers.authorization;
   console.log(req.headers);
 
-  if (!authheader) {
+  if (!authHeader) {
     res.setHeader('WWW-Authenticate', 'Basic');
-    return new AppError('You are not authenticated!', 401);
+    return next(new AppError('You are not authenticated!', 401));
   }
 
-  const auth = Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
+  const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
   const user = auth[0];
   const pass = auth[1];
 
@@ -47,7 +47,7 @@ export const basicAuth = (req, res, next) => {
     next();
   } else {
     res.setHeader('WWW-Authenticate', 'Basic');
-    return new AppError('You are not authenticated!', 401);
+    return next(new AppError('You are not authenticated!', 401));
   }
 };
 
