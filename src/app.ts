@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import m2s from 'mongoose-to-swagger';
 
 import globalErrHandler from './controllers/errorController';
-import protect from './middleware/auth';
+import protect, { basicAuth } from './middleware/auth';
 import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
 import postRouter from './routes/post.routes';
@@ -60,6 +60,9 @@ app.get('/', (req, res) => {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
+app.get('/api/auth/basic', basicAuth, (req, res, next) => {
+  res.status(200).json({ status: 'success', message: 'basic auth success' });
+});
 app.use('/api', authRouter);
 app.use('/api', protect, userRouter);
 app.use('/api', protect, postRouter);
