@@ -1,6 +1,7 @@
 import multer, { diskStorage } from 'multer';
 import { Router } from 'express';
 import { extension } from 'mime-types';
+import protect from '../middleware/auth';
 
 import {
   createPost,
@@ -26,11 +27,11 @@ const upload = multer({ storage });
 
 const router = Router();
 
-router.post('/posts', upload.single('image'), createPost);
-router.route('/posts/:postId').get(getPost).delete(deletePost);
-router.get('/like/:postId', likePost);
-router.get('/unlike/:postId', unlikePost);
-router.get('/posts', getAllPosts);
-router.get('/feed', getFeed);
+router.post('/posts', protect, upload.single('image'), createPost);
+router.route('/posts/:postId').get(protect, getPost).delete(protect, deletePost);
+router.get('/like/:postId', protect, likePost);
+router.get('/unlike/:postId', protect, unlikePost);
+router.get('/posts', protect, getAllPosts);
+router.get('/feed', protect, getFeed);
 
 export default router;

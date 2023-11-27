@@ -64,9 +64,9 @@ app.get('/api/auth/basic', basicAuth, (req, res, next) => {
   res.status(200).json({ status: 'success', message: 'basic auth success' });
 });
 app.use('/api', authRouter);
-app.use('/api', protect, userRouter);
-app.use('/api', protect, postRouter);
-app.use('/api', protect, commentRouter);
+app.use('/api', userRouter);
+app.use('/api', postRouter);
+app.use('/api', commentRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`can't find ${req.originalUrl} on this server!`, 404));
