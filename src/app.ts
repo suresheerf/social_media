@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import m2s from 'mongoose-to-swagger';
 
 import globalErrHandler from './controllers/errorController';
-import protect, { basicAuth } from './middleware/auth';
+import { basicAuth } from './middleware/auth';
 import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
 import postRouter from './routes/post.routes';
