@@ -68,10 +68,10 @@ app.use('/api', userRouter);
 app.use('/api', postRouter);
 app.use('/api', commentRouter);
 
+app.use(globalErrHandler);
+
 app.all('*', (req, res, next) => {
   next(new AppError(`can't find ${req.originalUrl} on this server!`, 404));
 });
-
-app.use(globalErrHandler);
 
 export default app;
