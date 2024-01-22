@@ -31,6 +31,7 @@ import AppError from '../utils/appError';
  */
 export const getUser = catchAsync(async (req, res, next) => {
   const user = {
+    _id: req.user._id,
     name: req.user.name,
     followers: req.user.followers.length,
     following: req.user.following.length,
