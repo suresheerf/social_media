@@ -7,6 +7,6 @@ const router = Router();
 router.post('/follow/:userId', protect, followUser);
 router.post('/unfollow/:userId', protect, unfollowUser);
 router.get('/user', protect, getUser);
-router.delete('/', protect, deleteUser);
+router.delete('/user', protect, deleteUser);
 
 export default router;
