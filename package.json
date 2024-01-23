@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "generalized social media backend using nodejs and mongodb",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/server.ts",
