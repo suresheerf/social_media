@@ -51,6 +51,7 @@
     "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "import/extensions": "off",
     "camelcase": "off",
-    "node/no-unsupported-features/es-syntax": ["error", { "ignores": ["modules"] }]
+    "node/no-unsupported-features/es-syntax": ["error", { "ignores": ["modules"] }],
+    "typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "next" }]
   }
 }

@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
 
-app.get('/api/auth/basic', basicAuth, (req, res, next) => {
+app.get('/api/auth/basic', basicAuth, (req, res) => {
   res.status(200).json({ status: 'success', message: 'basic auth success' });
 });
 app.use('/api', authRouter);

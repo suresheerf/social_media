@@ -1,6 +1,8 @@
+/* eslint-disable no-restricted-syntax */
 import User from '../models/user.model';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
+import Post from '../models/post.model';
 
 /**
  * @swagger
@@ -123,4 +125,25 @@ export const unfollowUser = catchAsync(async (req, res, next) => {
     return next(new AppError('Something went wrong', 409));
   }
   res.status(200).json({ status: 'success', message: 'unfollowing user successfully' });
+});
+
+export const deleteUser = catchAsync(async (req, res, next) => {
+  await User.updateMany(
+    { _id: { $in: req.user.followers } },
+    {
+      $pull: { following: req.user._id },
+    }
+  );
+
+  await User.updateMany(
+    { _id: { $in: req.user.following } },
+    {
+      $pull: { followers: req.user._id },
+    }
+  );
+
+  await Post.deleteMany({ userId: req.user._id });
+
+  await User.deleteOne({ _id: req.user._id });
+  res.status(200).json({ message: 'your account has been deleted successfully' });
 });
