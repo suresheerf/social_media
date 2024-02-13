@@ -22,7 +22,7 @@ const options = {
   definition: {
     openapi: '3.1.0',
     info: {
-      title: 'api-test-easy API with Swagger',
+      title: 'social media api',
       version: '0.1.0',
       description: 'This is a nodejs application made with Express and documented with Swagger',
       license: {
