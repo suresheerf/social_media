@@ -10,8 +10,11 @@ paths.forEach((path) => {
     fs.mkdirSync(`${pwd}/${path}`, { recursive: true });
   }
 });
-
 export const NODE_ENV = process.env.NODE_ENV || 'development';
+export const HOST_URL =
+  NODE_ENV === 'production'
+    ? `${process.env.HOST_URL}`
+    : `${process.env.HOST_URL}:${process.env.PORT}`;
 export const PORT = process.env.PORT || 3000;
 export const { JWT_SECRET } = process.env;
 export const { JWT_EXPIRES_IN } = process.env;

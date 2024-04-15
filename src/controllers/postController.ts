@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 import Post from '../models/post.model';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/appError';
-import { PORT } from '../config/config';
+import { HOST_URL } from '../config/config';
 
 type PostObj = {
   userId: string;
@@ -62,13 +62,16 @@ export const createPost = catchAsync(async (req, res, next) => {
   if (!req.body.description) {
     return next(new AppError('Please pass post description', 400));
   }
+  console.log('req.files:', req.files);
+  console.log('req.file:', req.file);
+
   const postObj: PostObj = {
     userId: req.user._id,
     title: req.body.title,
     description: req.body.description,
   };
   if (req.file) {
-    postObj.image = `http://localhost:${PORT}/${req.file.filename}`;
+    postObj.image = `${HOST_URL}/${req.file.filename}`;
   }
 
   console.log('postObj: ', postObj);
